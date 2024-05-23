@@ -1,7 +1,7 @@
 var database = require("../database/config");
 
-function buscarPorId(idEmpresa) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE idEmpresa = '${idEmpresa}'`;
+function buscarPorId(id) {
+  var instrucaoSql = `SELECT * FROM empresa WHERE id = '${id}'`;
 
   return database.executar(instrucaoSql);
 }

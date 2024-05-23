@@ -53,18 +53,15 @@
                          Para inserir mais um campo, copie uma das inputs abaixo.
                          Assim que inserir vá para o script abaixo.
                      -->
-
+          <div class="campo">
+            <span>Empresa:</span>
+            <select name="empresas" id="listaEmpresas">
+              <option selected>Selecione uma empresa</option>
+            </select>
+          </div>
           <div class="campo">
             <span>Nome:</span>
-            <input id="nome_input" type="text" placeholder="Nome da empresa" />
-          </div>
-          <div class="campo">
-            <span>CNPJ:</span>
-            <input id="cnpj_input" type="text" placeholder="Seu cnpj" />
-          </div>
-          <div class="campo">
-            <span>Celular:</span>
-            <input id="celular_input" type="text" placeholder="Seu celular" />
+            <input id="nome_input" type="text" placeholder="Seu nome" />
           </div>
           <div class="campo">
             <span>E-mail:</span>
@@ -105,35 +102,29 @@
   function cadastrar() {
     aguardar();
 
-    var telefone = celular_input.value
-
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
     var nomeVar = nome_input.value;
-    var cnpjVar = cnpj_input.value;
-    var dddVar = telefone.substr(0, 2);
-    var prefixoVar = telefone.substr(2, 5);
-    var sufixoVar = telefone.substr(6, 4);
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
-    var confirmacaoSenhaVar = confirmacao_senha_input.value
+    var confirmacaoSenhaVar = confirmacao_senha_input.value;
+    var empresaVar = listaEmpresas.value
+    if (
+      nomeVar == "" ||
+      emailVar == "" ||
+      senhaVar == "" ||
+      confirmacaoSenhaVar == "" ||
+      empresaVar == ""
+    ) {
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(Mensagem de erro para todos os campos em branco)";
 
-    // if (
-    //   nomeVar == "" ||
-    //   emailVar == "" ||
-    //   senhaVar == "" ||
-    //   confirmacaoSenhaVar == "" ||
-    //   empresaVar == ""
-    // ) {
-    //   cardErro.style.display = "block";
-    //   mensagem_erro.innerHTML =
-    //     "(Mensagem de erro para todos os campos em branco)";
-
-    //   finalizarAguardar();
-    //   return false;
-    // } else {
-    //   setInterval(sumirMensagem, 5000);
-    // }
+      finalizarAguardar();
+      return false;
+    } else {
+      setInterval(sumirMensagem, 5000);
+    }
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -145,12 +136,9 @@
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
-        cnpjServer: cnpjVar,
-        dddServer: dddVar,
-        prefixoServer: prefixoVar,
-        sufixoServer: sufixoVar,
         emailServer: emailVar,
-        senhaServer: senhaVar
+        senhaServer: senhaVar,
+        empresaServer: empresaVar
       }),
     })
       .then(function (resposta) {
